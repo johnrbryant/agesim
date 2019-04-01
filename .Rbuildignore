@@ -1,0 +1,5 @@
+^LICENSE\.md$
+^data-raw$
+^agesim\.Rproj$
+^\.Rproj\.user$
+^Makefile$

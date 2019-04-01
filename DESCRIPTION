@@ -1,0 +1,18 @@
+Package: agesim
+Title: Simulate Age Structures in Small Populations
+Version: 0.0.0.9000
+Authors@R: person("John", "Bryant", email = "john.r.bryant@gmail.com", role = c("aut", "cre"))
+Description: Functions and data for simulating age-sex structure
+    in small populations. Most of the work is done by functions
+    in package 'demest'.
+Depends: R (>= 3.5)
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Imports:
+    dembase,
+    demest
+Suggests:
+    demogR,
+    testthat
+RoxygenNote: 6.1.1
