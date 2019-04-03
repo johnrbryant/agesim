@@ -3,7 +3,7 @@
 .PHONY : all
 all : data/Lx_west.rda \
       data/mx_west.rda \
-      data/propn_age_fert.rda \
+      data/propn_age_fert_booth.rda \
       documentation
 
 data-raw/Lx_west_tmp.rda : data-raw/Lx_west_tmp.R
@@ -19,7 +19,7 @@ data/Lx_west.rda : data-raw/Lx_west.R \
 	Rscript $<
 	rm data-raw/Lx_west_tmp.rda
 
-data/propn_age_fert.rda : data-raw/propn_age_fert.R
+data/propn_age_fert_booth.rda : data-raw/propn_age_fert_booth.R
 	Rscript $<
 
 

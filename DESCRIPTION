@@ -11,7 +11,8 @@ Encoding: UTF-8
 LazyData: true
 Imports:
     dembase,
-    demest
+    demest,
+    methods
 Suggests:
     demogR,
     testthat
