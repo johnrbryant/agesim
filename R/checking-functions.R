@@ -50,6 +50,15 @@ check_positive_numeric <- function(value, name) {
     NULL
 }
 
+check_nonnegative_numeric <- function(value, name) {
+    check_numeric(value = value,
+                  name = name)
+    if (value < 0)
+        stop(gettextf("'%s' less than 0",
+                      name))
+    NULL
+}
+
 check_propn_age_fert <- function(propn_age_fert) {
     if (!methods::is(propn_age_fert, "Values"))
         stop(gettextf("'%s' has class \"%s\"",
