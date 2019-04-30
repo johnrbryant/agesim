@@ -84,9 +84,9 @@ make_account <- function(expected_popn, mort_rates, fert_rates,
     population <- dembase::toInteger(population, force = TRUE)
     deaths <- dembase::toInteger(deaths, force = TRUE)
     births <- dembase::toInteger(births, force = TRUE)
-    deaths <- perturb(deaths)
-    births <- perturb(births)
-    population <- perturb(population)
+    deaths <- perturb(deaths, order = 1)
+    births <- perturb(births, order = 1)
+    population <- perturb(population, order = 1)
     dembase::Movements(population = population,
                        births = births,
                        exits = list(deaths = deaths))
