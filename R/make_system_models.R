@@ -68,8 +68,8 @@ make_system_models <- function(expected_popn, mort_rates, fert_rates,
     prior_agesex_popn <- demest::Known(mean = log(expected_popn), sd = sd_agesex)
     prior_agesex_mort <- demest::Known(mean = log(mort_rates), sd = sd_agesex)
     prior_agesex_fert <- demest::Known(mean = log(fert_rates), sd = sd_agesex)
-    prior_priorSD_popn <- demest::HalfT(scale = scale_sd_popn)
-    prior_priorSD_rates <- demest::HalfT(scale = scale_sd_rates)
+    prior_priorSD_popn <- demest::HalfT(df = Inf, scale = scale_sd_popn)
+    prior_priorSD_rates <- demest::HalfT(df = Inf, scale = scale_sd_rates)
     mod_popn <- demest::Model(population ~ demest::Poisson(mean ~ age * sex + time,
                                                            useExpose = FALSE),
                               `(Intercept)` ~ prior_intercept,
