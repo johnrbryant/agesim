@@ -4,12 +4,12 @@
 \alias{make_account}
 \title{Make an initial demographic account}
 \usage{
-make_account(expected_popn, mort_rates, fert_rates, time_start, time_end)
+make_account(initial_popn, mort_rates, fert_rates, time_start, time_end)
 }
 \arguments{
-\item{expected_popn}{A \code{\link[dembase:Values-class]{Values}}
-array giving expected population counts by age and sex. Typically
-created using function \code{\link{make_expected_popn}}.}
+\item{initial_popn}{A \code{\link[dembase:DemographicAccount-class]{Counts}}
+object, typically created through a call to
+\code{\link{make_initial_popn}}.}
 
 \item{mort_rates}{A \code{\link[dembase:Values-class]{Values}}
 array giving mortality rates by age and sex.}
@@ -47,10 +47,11 @@ propn_age_fert <- dembase::Values(propn_age_fert_booth)
 expected_popn <- make_expected_popn(popn_size = 100,
                                     Lx = Lx,
                                     sex_ratio = 105)
+initial_popn <- make_initial_popn(expected_popn)
 fert_rates <- make_stationary_fert_rates(Lx = Lx,
                                propn_age_fert = propn_age_fert,
                                sex_ratio = 105)
-account <- make_account(expected_popn = expected_popn,
+account <- make_account(initial_popn = initial_popn,
                         mort_rates = mort_rates,
                         fert_rates = fert_rates,
                         time_start = 1000,

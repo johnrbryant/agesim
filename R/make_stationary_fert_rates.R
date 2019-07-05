@@ -36,7 +36,7 @@
 #'                            sex_ratio = 105)
 #' @export
 make_stationary_fert_rates <- function(Lx, propn_age_fert, sex_ratio) {
-    check_val_agesex(value = Lx,
+    check_agesex_Value(value = Lx,
                      name = "Lx")
     check_propn_age_fert(propn_age_fert)
     check_positive_numeric(value = sex_ratio,

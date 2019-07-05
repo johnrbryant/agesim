@@ -1,0 +1,57 @@
+
+#' Generate random initial population based on
+#' an expected population counts.
+#'
+#' Randomly enerate an initial population 
+#' based on expected population counts.
+#'
+#' The initial population counts are drawn from Poisson
+#' distributions centered at the expected values,
+#' with some extra variation.
+#' If \eqn{c_{a,s}} is the expected population size for
+#' age group \eqn{a} and sex \eqn{s},
+#' then the initial population is generated using
+#'   \deqn{n_{a,s} \sim Poisson(v_{a,s} c_{a, s})}
+#' where
+#'   \deqn{\log(v_{a,s}) \sim N(0, b^2)}.
+#' A value for \eqn{b}, which may be 0, is supplied by the user,
+#' via the \code{sd} argument.
+#'
+#' @inheritParams make_system_models
+#' @param sd A non-negative number, defaulting to 0.
+#' Governs extra variability in initial population,
+#' on top of Poisson variability.
+#'
+#' @return A \code{\link[dembase]{Counts}} object,
+#' with the same dimensions as \code{expected_popn}.
+#'
+#' @seealso \code{make_expected_popn}
+#'
+#' @examples
+#' Lx <- dembase::Values(Lx_west[ , , 20])
+#' expected_popn <- make_expected_popn(popn_size = 100,
+#'                                     Lx = Lx,
+#'                                     sex_ratio = 105)
+#' make_initial_popn(expected_popn = expected_popn,
+#'                   sd = 0.05)
+#' @export
+make_initial_popn <- function(expected_popn, sd = 0) {
+    check_nonnegative_numeric(value = sd,
+                              name = "sd")
+    n <- length(expected_popn)
+    log_v <- stats::rnorm(n = n,
+                          mean = 0,
+                          sd = sd)
+    v <- exp(log_v)
+    lambda <- v * expected_popn
+    metadata <- expected_popn@metadata
+    .Data <- stats::rpois(n = n,
+                          lambda = lambda)
+    .Data <- array(.Data,
+                   dim = dim(metadata),
+                   dimnames = dimnames(metadata))
+    methods::new("Counts",
+                 .Data = .Data,
+                 metadata = metadata)
+}
+

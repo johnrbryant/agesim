@@ -2,6 +2,7 @@
 
 export(make_account)
 export(make_expected_popn)
+export(make_initial_popn)
 export(make_stationary_fert_rates)
 export(make_system_models)
 import(dembase)

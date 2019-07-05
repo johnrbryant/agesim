@@ -44,12 +44,12 @@ make_system_models <- function(expected_popn, mort_rates, fert_rates,
                                sd_intercept = 0.1, sd_time = 0.01,
                                sd_agesex = 0.01, scale_sd_popn = 0.01,
                                scale_sd_rates = 0.01) {
-    check_val_agesex(value = expected_popn,
-                     name = "expected_popn")
-    check_val_agesex(value = mort_rates,
-                     name = "mort_rates")
-    check_val_agesex(value = fert_rates,
-                     name = "fert_rates")
+    check_agesex_Value(value = expected_popn,
+                       name = "expected_popn")
+    check_agesex_Value(value = mort_rates,
+                       name = "mort_rates")
+    check_agesex_Value(value = fert_rates,
+                       name = "fert_rates")
     check_nonnegative_numeric(value = sd_intercept,
                               name = "sd_intercept")
     check_nonnegative_numeric(value = sd_time,

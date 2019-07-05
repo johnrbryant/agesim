@@ -4,7 +4,7 @@ library(dembase)
 library(demogR)
 library(dplyr)
 
-age_breaks <- seq(0, 80, 5)
+age_breaks <- seq(0, 60, 5)
 
 load("data-raw/Lx_west_tmp.rda")
 

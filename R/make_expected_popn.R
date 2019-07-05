@@ -32,7 +32,7 @@
 make_expected_popn <- function(popn_size, Lx, sex_ratio) {
     check_positive_numeric(value = popn_size,
                            name = "popn_size")
-    check_val_agesex(value = Lx,
+    check_agesex_Value(value = Lx,
                      name = "Lx")
     check_positive_numeric(value = sex_ratio,
                            name = "sex_ratio")
