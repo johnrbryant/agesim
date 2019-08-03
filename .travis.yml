@@ -2,5 +2,5 @@
 
 language: R
 cache: packages
-r_github_packages: statisticsnz/dembase
+r_github_packages: statisticsnz/dembase, statisticsnz/demest
     
