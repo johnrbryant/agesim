@@ -14,9 +14,6 @@ Depends:
     demest
 Imports:
     methods
-Remotes:
-    statisticsnz/dembase,
-    statisticsnz/demest
 Suggests:
     demogR,
     testthat
