@@ -2,7 +2,7 @@
 context("make_account")
 
 test_that("make_account creates expected outputs", {
-    Lx <- dembase::Values(Lx_west[,,15])
+    Lx <- dembase::Counts(Lx_west[,,15])
     mort_rates <- dembase::Values(mx_west[,,15])
     propn_age_fert = dembase::Values(propn_age_fert_booth)
     expected_popn <- make_expected_popn(popn_size = 123,

@@ -6,14 +6,14 @@
 #' calculate the age-sex-specific fertility rates that would
 #' produce a stationary (ie zero growth rate) population.
 #'
-#' \code{Lx} must be a \code{\link[dembase:Values-class]{Values}}
+#' \code{Lx} must be a \code{\link[dembase:Counts-class]{Counts}}
 #' array with two dimensions. The dimensions of \code{Lx} must have
 #' \code{\link[dembase]{dimtype}} \code{"age"} and \code{"sex"}.
 #' The \code{"age"} dimension must have \code{\link[dembase]{dimscale}}
 #' \code{"Intervals"}.
 #'
 #' \code{propn_age_fert} must be a
-#' \code{\link[dembase:Values-class]{Values}}
+#' \code{\link[dembase:Counts-class]{Counts}}
 #' array, with a single dimension. The dimension must have
 #' \code{\link[dembase]{dimtype}} \code{"age"},
 #' and \code{\link[dembase]{dimscale}} \code{"Intervals"}.
@@ -29,15 +29,15 @@
 #' \code{\link{make_stationary_fert_rates}}
 #'
 #' @examples
-#' Lx <- dembase::Values(Lx_west[ , , "10"])
+#' Lx <- dembase::Counts(Lx_west[ , , "10"])
 #' propn_age_fert <- dembase::Values(propn_age_fert_booth)
 #' make_stationary_fert_rates(Lx = Lx,
 #'                            propn_age_fert = propn_age_fert,
 #'                            sex_ratio = 105)
 #' @export
 make_stationary_fert_rates <- function(Lx, propn_age_fert, sex_ratio) {
-    check_agesex_Value(value = Lx,
-                     name = "Lx")
+    check_agesex_Count(value = Lx,
+                       name = "Lx")
     check_propn_age_fert(propn_age_fert)
     check_positive_numeric(value = sex_ratio,
                            name = "sex_ratio")

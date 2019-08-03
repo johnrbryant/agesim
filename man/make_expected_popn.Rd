@@ -9,14 +9,14 @@ make_expected_popn(popn_size, Lx, sex_ratio)
 \arguments{
 \item{popn_size}{The total population size.}
 
-\item{Lx}{A \code{\link[dembase:Values-class]{Values}}
+\item{Lx}{A \code{\link[dembase:Counts-class]{Counts}}
 array with the life table Lx values.}
 
 \item{sex_ratio}{The number of male births per 100 female
 births.}
 }
 \value{
-A \code{\link[dembase]{Values}} object,
+A \code{\link[dembase]{Counts}} object,
 with the same dimensions as \code{Lx}.
 }
 \description{
@@ -25,14 +25,14 @@ implied by a given combination of total population size,
 life table Lx, and sex ratio.
 }
 \details{
-\code{Lx} must be a \code{\link[dembase:Values-class]{Values}}
+\code{Lx} must be a \code{\link[dembase:Counts-class]{Counts}}
 array with two dimensions. The dimensions must have
 \code{\link[dembase]{dimtype}} \code{"age"} and \code{"sex"}.
 The \code{"age"} dimension must have \code{\link[dembase]{dimscale}}
 \code{"Intervals"}.
 }
 \examples{
-Lx <- dembase::Values(Lx_west[ , , "10"])
+Lx <- dembase::Counts(Lx_west[ , , "10"])
 make_expected_popn(popn_size = 100,
                    Lx = Lx,
                    sex_ratio = 105)

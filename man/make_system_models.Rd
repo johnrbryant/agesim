@@ -9,7 +9,7 @@ make_system_models(expected_popn, mort_rates, fert_rates,
   scale_sd_popn = 0.01, scale_sd_rates = 0.01)
 }
 \arguments{
-\item{expected_popn}{A \code{\link[dembase:Values-class]{Values}}
+\item{expected_popn}{A \code{\link[dembase:Counts-class]{Counts}}
 array giving expected population counts by age and sex. Typically
 created using function \code{\link{make_expected_popn}}.}
 
@@ -44,7 +44,7 @@ Make system models for population, deaths, and births,
 for a demographic account
 }
 \examples{
-Lx <- dembase::Values(Lx_west[ , , 20])
+Lx <- dembase::Counts(Lx_west[ , , 20])
 mort_rates <- dembase::Values(mx_west[ , , 20])
 propn_age_fert <- dembase::Values(propn_age_fert_booth)
 expected_popn <- make_expected_popn(popn_size = 100,

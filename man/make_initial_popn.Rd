@@ -8,7 +8,7 @@ an expected population counts.}
 make_initial_popn(expected_popn, sd = 0)
 }
 \arguments{
-\item{expected_popn}{A \code{\link[dembase:Values-class]{Values}}
+\item{expected_popn}{A \code{\link[dembase:Counts-class]{Counts}}
 array giving expected population counts by age and sex. Typically
 created using function \code{\link{make_expected_popn}}.}
 
@@ -38,7 +38,7 @@ A value for \eqn{b}, which may be 0, is supplied by the user,
 via the \code{sd} argument.
 }
 \examples{
-Lx <- dembase::Values(Lx_west[ , , 20])
+Lx <- dembase::Counts(Lx_west[ , , 20])
 expected_popn <- make_expected_popn(popn_size = 100,
                                     Lx = Lx,
                                     sex_ratio = 105)

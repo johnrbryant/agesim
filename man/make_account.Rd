@@ -41,7 +41,7 @@ steps, then \code{time_end - time_start} should be a
 multiple of 5.
 }
 \examples{
-Lx <- dembase::Values(Lx_west[ , , 20])
+Lx <- dembase::Counts(Lx_west[ , , 20])
 mort_rates <- dembase::Values(mx_west[ , , 20])
 propn_age_fert <- dembase::Values(propn_age_fert_booth)
 expected_popn <- make_expected_popn(popn_size = 100,

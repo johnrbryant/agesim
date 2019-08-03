@@ -28,7 +28,7 @@
 #' @seealso \code{make_expected_popn}
 #'
 #' @examples
-#' Lx <- dembase::Values(Lx_west[ , , 20])
+#' Lx <- dembase::Counts(Lx_west[ , , 20])
 #' expected_popn <- make_expected_popn(popn_size = 100,
 #'                                     Lx = Lx,
 #'                                     sex_ratio = 105)
