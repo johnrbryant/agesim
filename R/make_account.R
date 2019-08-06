@@ -82,13 +82,27 @@ make_account <- function(initial_popn, mort_rates, fert_rates,
     exposure <- dembase::exposure(population)
     exposure_births <- dembase::exposureBirths(population,
                                                births = fert_rates)
-    deaths <- mort_rates * exposure
-    births <- fert_rates * exposure_births
-    deaths <- dembase::toInteger(deaths, force = TRUE)
-    births <- dembase::toInteger(births, force = TRUE)
-    deaths <- perturb(deaths, order = 1)
-    births <- perturb(births, order = 1)
-    dembase::Movements(population = population,
-                       births = births,
-                       exits = list(deaths = deaths))
+    expected_deaths <- mort_rates * exposure
+    expected_births <- fert_rates * exposure_births
+    deaths <- stats::rpois(n = length(expected_deaths),
+                           lambda = expected_deaths)
+    births <- stats::rpois(n = length(expected_births),
+                           lambda = expected_births)
+    deaths <- array(deaths,
+                    dim = dim(exposure),
+                    dimnames = dimnames(exposure))
+    births <- array(births,
+                    dim = dim(exposure_births),
+                    dimnames = dimnames(exposure_births))
+    deaths <- methods::new("Counts",
+                           .Data = deaths,
+                           metadata = exposure@metadata)
+    births <- methods::new("Counts",
+                           .Data = births,
+                           metadata = exposure_births@metadata)
+    ans <- dembase::Movements(population = population,
+                              births = births,
+                              exits = list(deaths = deaths))
+    ans <- dembase::makeConsistent(ans)
+    ans
 }
