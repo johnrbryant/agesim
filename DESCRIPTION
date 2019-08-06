@@ -17,4 +17,7 @@ Imports:
 Suggests:
     demogR,
     testthat
+Remotes:
+     statisticsnz/dembase,
+     statisticsnz/demest
 RoxygenNote: 6.1.1

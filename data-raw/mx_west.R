@@ -4,7 +4,7 @@ library(dembase)
 library(demogR)
 library(dplyr)
 
-age_breaks <- seq(0, 60, 5)
+age_breaks <- seq(0, 70, 5)
 
 mx_west_female <- cdmltw(sex = "F")$nmx
 mx_west_male <- cdmltw(sex = "M")$nmx
