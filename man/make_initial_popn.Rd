@@ -5,12 +5,14 @@
 \title{Generate random initial population based on
 an expected population counts.}
 \usage{
-make_initial_popn(expected_popn, sd = 0)
+make_initial_popn(expected_popn, poisson = FALSE, sd = 0)
 }
 \arguments{
 \item{expected_popn}{A \code{\link[dembase:Counts-class]{Counts}}
 array giving expected population counts by age and sex. Typically
 created using function \code{\link{make_expected_popn}}.}
+
+\item{poisson}{If \code{TRUE}}
 
 \item{sd}{A non-negative number, defaulting to 0.
 Governs extra variability in initial population,
@@ -25,7 +27,9 @@ Randomly enerate an initial population
 based on expected population counts.
 }
 \details{
-The initial population counts are drawn from Poisson
+When \code{poisson} is \code{TRUE} (the default)
+the initial population counts are drawn
+from Poisson
 distributions centered at the expected values,
 with some extra variation.
 If \eqn{c_{a,s}} is the expected population size for
@@ -36,14 +40,21 @@ where
   \deqn{\log(v_{a,s}) \sim N(0, b^2)}.
 A value for \eqn{b}, which may be 0, is supplied by the user,
 via the \code{sd} argument.
+
+When \code{poisson} is \code{FALSE}, the initial
+population counts are obtained simply by rounding
+the expected values to the nearest integer.
 }
 \examples{
 Lx <- dembase::Counts(Lx_west[ , , 20])
 expected_popn <- make_expected_popn(popn_size = 100,
                                     Lx = Lx,
                                     sex_ratio = 105)
+make_initial_popn(expected_popn = expected_popn)
 make_initial_popn(expected_popn = expected_popn,
                   sd = 0.05)
+make_initial_popn(expected_popn = expected_popn,
+                  poisson = FALSE)
 }
 \seealso{
 \code{make_expected_popn}

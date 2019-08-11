@@ -1,4 +1,18 @@
 
+check_logical_flag <- function(value, name) {
+    if (!is.logical(value))
+        stop(gettextf("'%s' is does not have type \"%s\"",
+                      name, "logical"))
+    if (!identical(length(value), 1L))
+        stop(gettextf("'%s' does not have length %d",
+                      name, 1L))
+    if (is.na(value))
+        stop(gettextf("'%s' is missing",
+                      name))
+    NULL
+}
+    
+
 check_numeric <- function(value, name) {
     if (!is.numeric(value))
         stop(gettextf("'%s' is non-numeric",
