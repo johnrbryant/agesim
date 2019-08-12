@@ -57,6 +57,9 @@ check_propn_age_fert <- function(propn_age_fert) {
     if (any(propn_age_fert < 0))
         stop(gettextf("'%s' has negative values",
                       "propn_age_fert"))
+    if (!isTRUE(all.equal(sum(propn_age_fert), 1)))
+        stop(gettextf("'%s' does not sum to 1",
+                      "propn_age_fert"))
     dimtypes <- dembase::dimtypes(propn_age_fert, use.names = FALSE)
     if (!identical(dimtypes, "age"))
         stop(gettextf("'%s' does not have dimension with %s \"%s\"",
