@@ -18,7 +18,7 @@
 #' \code{\link[dembase]{dimtype}} \code{"age"},
 #' and \code{\link[dembase]{dimscale}} \code{"Intervals"}.
 #'
-#' @inheritParams make_expected_popn
+#' @inheritParams make_stationary_popn
 #' @param propn_age_fert A \code{\link[dembase:Values-class]{Values}}
 #' with the age-distribution of fertility rates.
 #'
@@ -47,12 +47,9 @@ make_stationary_fert_rates <- function(Lx, propn_age_fert, sex_ratio) {
                                                y = propn_age_sex_fert,
                                                subset = TRUE)
     product <- popn_reprod_age * propn_age_sex_fert
-    i_sex <- match("sex", dembase::dimtypes(product))
-    DS_sex <- dembase::DimScales(product)[[i_sex]]
-    i_female <- dembase::iFemale(DS_sex)
     product_female <- dembase::slab(product,
-                                    dimension = i_sex,
-                                    elements = i_female)
+                                    dimension = "sex",
+                                    elements = "Female")
     multiplier <- 1 / sum(product_female)
     multiplier * propn_age_sex_fert
 }

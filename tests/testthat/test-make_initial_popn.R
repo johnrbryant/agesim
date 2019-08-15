@@ -1,9 +1,9 @@
 
-context("make_expected_popn")
+context("make_stationary_popn")
 
-test_that("make_expected_popn creates population of expected size", {
+test_that("make_stationary_popn creates population of expected size", {
     set.seed(1)
-    expected_popn <- make_expected_popn(popn_size = 123,
+    expected_popn <- make_stationary_popn(popn_size = 123,
                                            Lx = dembase::Counts(Lx_west[,,15]),
                                            sex_ratio = 111)
     ans_obtained <- sum(make_initial_popn(expected_popn = expected_popn))
@@ -15,8 +15,8 @@ test_that("make_expected_popn creates population of expected size", {
     expect_equal(ans_obtained, ans_expected, tol = 0.1)
 })
 
-test_that("make_expected_popn creates population with expected age structure", {
-    expected_popn <- make_expected_popn(popn_size = 123,
+test_that("make_stationary_popn creates population with expected age structure", {
+    expected_popn <- make_stationary_popn(popn_size = 123,
                                         Lx = dembase::Counts(Lx_west[,,15]),
                                         sex_ratio = 111)
     popn <- make_initial_popn(expected_popn = expected_popn,

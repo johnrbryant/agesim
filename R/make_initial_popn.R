@@ -32,11 +32,11 @@
 #' @return A \code{\link[dembase]{Counts}} object,
 #' with the same dimensions as \code{expected_popn}.
 #'
-#' @seealso \code{make_expected_popn}
+#' @seealso \code{make_stationary_popn}
 #'
 #' @examples
 #' Lx <- dembase::Counts(Lx_west[ , , 20])
-#' expected_popn <- make_expected_popn(popn_size = 100,
+#' expected_popn <- make_stationary_popn(popn_size = 100,
 #'                                     Lx = Lx,
 #'                                     sex_ratio = 105)
 #' make_initial_popn(expected_popn = expected_popn)

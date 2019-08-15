@@ -10,7 +10,8 @@ make_initial_popn(expected_popn, poisson = FALSE, sd = 0)
 \arguments{
 \item{expected_popn}{A \code{\link[dembase:Counts-class]{Counts}}
 array giving expected population counts by age and sex. Typically
-created using function \code{\link{make_expected_popn}}.}
+created using functions \code{\link{make_stationary_popn}},
+or \code{\link{make_stable_popn}}.}
 
 \item{poisson}{If \code{TRUE}}
 
@@ -47,7 +48,7 @@ the expected values to the nearest integer.
 }
 \examples{
 Lx <- dembase::Counts(Lx_west[ , , 20])
-expected_popn <- make_expected_popn(popn_size = 100,
+expected_popn <- make_stationary_popn(popn_size = 100,
                                     Lx = Lx,
                                     sex_ratio = 105)
 make_initial_popn(expected_popn = expected_popn)
@@ -57,5 +58,5 @@ make_initial_popn(expected_popn = expected_popn,
                   poisson = FALSE)
 }
 \seealso{
-\code{make_expected_popn}
+\code{make_stationary_popn}
 }

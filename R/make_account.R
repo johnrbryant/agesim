@@ -13,10 +13,12 @@
 #' steps, then \code{time_end - time_start} should be a
 #' multiple of 5.
 #'
+#' If \code{popn}, \code{mort_rates}, or \code{fert_rates}
+#' do not have a time dimension, \code{make_account} adds one.
+#'
 #' @inheritParams make_system_models
-#' @param initial_popn A \code{\link[dembase:DemographicAccount-class]{Counts}}
-#' object, typically created through a call to
-#' \code{\link{make_initial_popn}}.
+#' @param popn A \code{\link[dembase:DemographicAccount-class]{Counts}}
+#' object.
 #' @param time_start The first year for the account.
 #' @param time_end The last year for the account.
 #'
@@ -27,28 +29,29 @@
 #' Lx <- dembase::Counts(Lx_west[ , , 20])
 #' mort_rates <- dembase::Values(mx_west[ , , 20])
 #' propn_age_fert <- dembase::Values(propn_age_fert_booth)
-#' expected_popn <- make_expected_popn(popn_size = 100,
-#'                                     Lx = Lx,
-#'                                     sex_ratio = 105)
-#' initial_popn <- make_initial_popn(expected_popn)
+#' popn <- make_stationary_popn(popn_size = 100,
+#'                              Lx = Lx,
+#'                              sex_ratio = 105,
+#'                              time_start = 1000,
+#'                              time_end = 1020)
 #' fert_rates <- make_stationary_fert_rates(Lx = Lx,
 #'                                propn_age_fert = propn_age_fert,
 #'                                sex_ratio = 105)
-#' account <- make_account(initial_popn = initial_popn,
+#' account <- make_account(popn = popn,
 #'                         mort_rates = mort_rates,
 #'                         fert_rates = fert_rates,
 #'                         time_start = 1000,
 #'                         time_end = 1020)
 #' dembase::summary(account)
 #' @export
-make_account <- function(initial_popn, mort_rates, fert_rates,
+make_account <- function(popn, mort_rates, fert_rates,
                          time_start, time_end) {
-    check_agesex_Count(value = initial_popn,
-                       name = "initial_popn")
-    check_agesex_Value(value = mort_rates,
-                       name = "mort_rates")
-    check_agesex_Value(value = fert_rates,
-                       name = "fert_rates")
+    check_agesextime_Count(value = popn,
+                           name = "popn")
+    check_agesextime_Value(value = mort_rates,
+                           name = "mort_rates")
+    check_agesextime_Value(value = fert_rates,
+                           name = "fert_rates")
     check_whole_number(value = time_start,
                        name = "time_start")
     check_whole_number(value = time_end,
@@ -56,7 +59,7 @@ make_account <- function(initial_popn, mort_rates, fert_rates,
     if (time_end <= time_start)
         stop(gettextf("'%s' is less than or equal to '%s'",
                       "time_end", "time_start"))
-    step <- dembase::ageTimeStep(initial_popn)
+    step <- dembase::ageTimeStep(popn)
     dimvalues_time <- seq(from = time_start,
                           to = time_end,
                           by = step)
@@ -64,26 +67,30 @@ make_account <- function(initial_popn, mort_rates, fert_rates,
     DimScale_intervals <- methods::new("Intervals", dimvalues = dimvalues_time)
     labels_points <- dembase::labels(DimScale_points)
     labels_intervals <- dembase::labels(DimScale_intervals)
-    population <- dembase::addDimension(initial_popn,
-                                        name = "time",
-                                        labels = labels_points,
-                                        dimtype = "time",
-                                        dimscale = "Points")
-    mort_rates <- dembase::addDimension(mort_rates,
-                                        name = "time",
-                                        labels = labels_intervals,
-                                        dimtype = "time",
-                                        dimscale = "Intervals")
-    fert_rates <- dembase::addDimension(fert_rates,
-                                        name = "time",
-                                        labels = labels_intervals,
-                                        dimtype = "time",
-                                        dimscale = "Intervals")
-    exposure <- dembase::exposure(population)
-    exposure_births <- dembase::exposureBirths(population,
+    if (!("time" %in% dimtypes(popn)))
+        popn <- dembase::addDimension(popn,
+                                      name = "time",
+                                      labels = labels_points,
+                                      dimtype = "time",
+                                      dimscale = "Points")
+    if (!("time" %in% dimtypes(mort_rates)))        
+        mort_rates <- dembase::addDimension(mort_rates,
+                                            name = "time",
+                                            labels = labels_intervals,
+                                            dimtype = "time",
+                                            dimscale = "Intervals")
+    if (!("time" %in% dimtypes(fert_rates)))        
+        fert_rates <- dembase::addDimension(fert_rates,
+                                            name = "time",
+                                            labels = labels_intervals,
+                                            dimtype = "time",
+                                            dimscale = "Intervals")
+    exposure <- dembase::exposure(popn)
+    exposure_births <- dembase::exposureBirths(popn,
                                                births = fert_rates)
     expected_deaths <- mort_rates * exposure
     expected_births <- fert_rates * exposure_births
+    popn <- round(popn)
     deaths <- stats::rpois(n = length(expected_deaths),
                            lambda = expected_deaths)
     births <- stats::rpois(n = length(expected_births),
@@ -100,7 +107,7 @@ make_account <- function(initial_popn, mort_rates, fert_rates,
     births <- methods::new("Counts",
                            .Data = births,
                            metadata = exposure_births@metadata)
-    ans <- dembase::Movements(population = population,
+    ans <- dembase::Movements(population = popn,
                               births = births,
                               exits = list(deaths = deaths))
     ans <- dembase::makeConsistent(ans)

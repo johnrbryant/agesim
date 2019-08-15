@@ -6,7 +6,8 @@
 #'
 #' @param expected_popn A \code{\link[dembase:Counts-class]{Counts}}
 #' array giving expected population counts by age and sex. Typically
-#' created using function \code{\link{make_expected_popn}}.
+#' created using functions \code{\link{make_stationary_popn}},
+#' or \code{\link{make_stable_popn}}.
 #' @param mort_rates A \code{\link[dembase:Values-class]{Values}}
 #' array giving mortality rates by age and sex.
 #' @param fert_rates A \code{\link[dembase:Values-class]{Values}}
@@ -30,12 +31,12 @@
 #' Lx <- dembase::Counts(Lx_west[ , , 20])
 #' mort_rates <- dembase::Values(mx_west[ , , 20])
 #' propn_age_fert <- dembase::Values(propn_age_fert_booth)
-#' expected_popn <- make_expected_popn(popn_size = 100,
-#'                                     Lx = Lx,
+#' expected_popn <- make_stationary_popn(popn_size = 100,
+#'                                       Lx = Lx,
 #'                                     sex_ratio = 105)
 #' fert_rates <- make_stationary_fert_rates(Lx = Lx,
-#'                                propn_age_fert = propn_age_fert,
-#'                                sex_ratio = 105)
+#'                                          propn_age_fert = propn_age_fert,
+#'                                          sex_ratio = 105)
 #' make_system_models(expected_popn = expected_popn,
 #'                    mort_rates = mort_rates,
 #'                    fert_rates = fert_rates)
@@ -44,7 +45,7 @@ make_system_models <- function(expected_popn, mort_rates, fert_rates,
                                sd_intercept = 0.1, sd_time = 0.01,
                                sd_agesex = 0.01, scale_sd_popn = 0.01,
                                scale_sd_rates = 0.01) {
-    check_agesex_Value(value = expected_popn,
+    check_agesex_Count(value = expected_popn,
                        name = "expected_popn")
     check_agesex_Value(value = mort_rates,
                        name = "mort_rates")
@@ -60,6 +61,7 @@ make_system_models <- function(expected_popn, mort_rates, fert_rates,
                               name = "scale_sd_popn")
     check_nonnegative_numeric(value = scale_sd_rates,
                               name = "scale_sd_rates")
+    expected_popn <- methods::as(expected_popn, "Values")
     prior_intercept <- demest::ExchFixed(mean = 0, sd = sd_intercept)
     prior_age <- demest::Zero()
     prior_sex <- demest::Zero()

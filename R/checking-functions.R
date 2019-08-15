@@ -85,6 +85,31 @@ check_agesex <- function(value, name) {
     NULL
 }
 
+check_agesextime <- function(value, name) {
+    n <- length(dim(value)) 
+    if (!(n %in% 2:3))
+        stop(gettextf("'%s' does not have %d or %d dimensions",
+                      name, 2L, 3L))
+    if (any(is.na(value)))
+        stop(gettextf("'%s' has missing values",
+                      name))
+    if (any(value < 0))
+        stop(gettextf("'%s' has negative values",
+                      name))
+    dimtypes <- dembase::dimtypes(value, use.names = FALSE)
+    if (n == 2L) {
+        if (!setequal(dimtypes, c("age", "sex")))
+            stop(gettextf("'%s' does not have dimensions with %s \"%s\" and \"%s\"",
+                          name, "dimtype", "age", "sex"))
+    }
+    else {
+        if (!setequal(dimtypes, c("age", "sex", "time")))
+            stop(gettextf("'%s' does not have dimensions with %s \"%s\", \"%s\", and \"%s\"",
+                          name, "dimtype", "age", "sex", "time"))
+    }
+    NULL
+}
+
 check_agesex_Count <- function(value, name) {
     if (!methods::is(value, "Counts"))
         stop(gettextf("'%s' has class \"%s\"",
@@ -103,6 +128,29 @@ check_agesex_Value <- function(value, name) {
     NULL
 }
 
+check_agesextime_Count <- function(value, name) {
+    if (!methods::is(value, "Counts"))
+        stop(gettextf("'%s' has class \"%s\"",
+                      name, class(value)))
+    check_agesextime(value = value,
+                     name = name)
+    NULL
+}
+
+check_agesextime_Value <- function(value, name) {
+    if (!methods::is(value, "Values"))
+        stop(gettextf("'%s' has class \"%s\"",
+                      name, class(value)))
+    check_agesextime(value = value,
+                     name = name)
+    NULL
+}
+
+
+
+
+
+
 check_whole_number <- function(value, name) {
     check_numeric(value = value,
                   name = name)
@@ -113,3 +161,20 @@ check_whole_number <- function(value, name) {
 }
 
 
+check_time_start_end <- function(time_start, time_end, step) {
+    check_whole_number(value = time_start,
+                       name = "time_start")
+    check_whole_number(value = time_end,
+                       name = "time_end")
+    check_whole_number(value = step,
+                       name = "step")
+    if (time_end < time_start)
+        stop(gettextf("'%s' is less than '%s'",
+                      "time_end", "time_start"))
+    if ((time_end - time_start) %% step != 0L)
+        stop(gettextf("difference between '%s' and '%s' not a multiple of '%s'",
+                      "time_end", "time_start", "step"))
+    NULL
+}
+    
+    

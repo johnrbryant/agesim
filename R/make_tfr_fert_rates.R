@@ -12,7 +12,7 @@
 #' \code{\link[dembase]{dimtype}} \code{"age"},
 #' and \code{\link[dembase]{dimscale}} \code{"Intervals"}.
 #'
-#' @inheritParams make_expected_popn
+#' @inheritParams make_stationary_popn
 #' @param tfr The target total fertility rate. A positive number.
 #' @param propn_age_fert A \code{\link[dembase:Values-class]{Values}}
 #' with the age-distribution of fertility rates.
@@ -36,6 +36,7 @@ make_tfr_fert_rates <- function(tfr, propn_age_fert, sex_ratio) {
                            name = "sex_ratio")
     propn_sex <- make_propn_sex(sex_ratio)
     propn_age_sex_fert <- propn_age_fert * propn_sex
-    tfr * propn_age_sex_fert
+    step <- ageTimeStep(propn_age_fert)
+    tfr * propn_age_sex_fert / step
 }
 

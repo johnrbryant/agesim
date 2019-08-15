@@ -4,12 +4,11 @@
 \alias{make_account}
 \title{Make an initial demographic account}
 \usage{
-make_account(initial_popn, mort_rates, fert_rates, time_start, time_end)
+make_account(popn, mort_rates, fert_rates, time_start, time_end)
 }
 \arguments{
-\item{initial_popn}{A \code{\link[dembase:DemographicAccount-class]{Counts}}
-object, typically created through a call to
-\code{\link{make_initial_popn}}.}
+\item{popn}{A \code{\link[dembase:DemographicAccount-class]{Counts}}
+object.}
 
 \item{mort_rates}{A \code{\link[dembase:Values-class]{Values}}
 array giving mortality rates by age and sex.}
@@ -39,19 +38,23 @@ made consistent using function \code{\link[dembase]{makeConsistent}}.
 If \code{Lx} and \code{propn_age_fert} use 5-year time
 steps, then \code{time_end - time_start} should be a
 multiple of 5.
+
+If \code{popn}, \code{mort_rates}, or \code{fert_rates}
+do not have a time dimension, \code{make_account} adds one.
 }
 \examples{
 Lx <- dembase::Counts(Lx_west[ , , 20])
 mort_rates <- dembase::Values(mx_west[ , , 20])
 propn_age_fert <- dembase::Values(propn_age_fert_booth)
-expected_popn <- make_expected_popn(popn_size = 100,
-                                    Lx = Lx,
-                                    sex_ratio = 105)
-initial_popn <- make_initial_popn(expected_popn)
+popn <- make_stationary_popn(popn_size = 100,
+                             Lx = Lx,
+                             sex_ratio = 105,
+                             time_start = 1000,
+                             time_end = 1020)
 fert_rates <- make_stationary_fert_rates(Lx = Lx,
                                propn_age_fert = propn_age_fert,
                                sex_ratio = 105)
-account <- make_account(initial_popn = initial_popn,
+account <- make_account(popn = popn,
                         mort_rates = mort_rates,
                         fert_rates = fert_rates,
                         time_start = 1000,

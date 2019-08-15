@@ -11,7 +11,8 @@ make_system_models(expected_popn, mort_rates, fert_rates,
 \arguments{
 \item{expected_popn}{A \code{\link[dembase:Counts-class]{Counts}}
 array giving expected population counts by age and sex. Typically
-created using function \code{\link{make_expected_popn}}.}
+created using functions \code{\link{make_stationary_popn}},
+or \code{\link{make_stable_popn}}.}
 
 \item{mort_rates}{A \code{\link[dembase:Values-class]{Values}}
 array giving mortality rates by age and sex.}
@@ -47,12 +48,12 @@ for a demographic account
 Lx <- dembase::Counts(Lx_west[ , , 20])
 mort_rates <- dembase::Values(mx_west[ , , 20])
 propn_age_fert <- dembase::Values(propn_age_fert_booth)
-expected_popn <- make_expected_popn(popn_size = 100,
-                                    Lx = Lx,
+expected_popn <- make_stationary_popn(popn_size = 100,
+                                      Lx = Lx,
                                     sex_ratio = 105)
 fert_rates <- make_stationary_fert_rates(Lx = Lx,
-                               propn_age_fert = propn_age_fert,
-                               sex_ratio = 105)
+                                         propn_age_fert = propn_age_fert,
+                                         sex_ratio = 105)
 make_system_models(expected_popn = expected_popn,
                    mort_rates = mort_rates,
                    fert_rates = fert_rates)
