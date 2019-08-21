@@ -18,7 +18,7 @@
 #' @param sd_time The standard deviation term to be used
 #' in priors for time.
 #' @param sd_agesex The standard deviation term to be used
-#' in priors for age-sex interactions.
+#' in priors for age-sex or age-sex-triangle interactions.
 #' @param scale_sd_popn The scale to be used in the prior
 #' for standard deviation in the prior model for population.
 #' @param scale_sd_rates The scale to be used in the priors
@@ -29,7 +29,7 @@
 #'
 #' @examples
 #' Lx <- dembase::Counts(Lx_west[ , , 20])
-#' mort_rates <- dembase::Values(mx_west[ , , 20])
+#' mort_rates <- dembase::Values(mx_west[ , , , 20])
 #' propn_age_fert <- dembase::Values(propn_age_fert_booth)
 #' expected_popn <- make_stationary_popn(popn_size = 100,
 #'                                       Lx = Lx,
@@ -47,8 +47,8 @@ make_system_models <- function(expected_popn, mort_rates, fert_rates,
                                scale_sd_rates = 0.01) {
     check_agesex_Count(value = expected_popn,
                        name = "expected_popn")
-    check_agesex_Value(value = mort_rates,
-                       name = "mort_rates")
+    check_agesextriangletime_Value(value = mort_rates,
+                                   name = "mort_rates")
     check_agesex_Value(value = fert_rates,
                        name = "fert_rates")
     check_nonnegative_numeric(value = sd_intercept,
@@ -68,7 +68,10 @@ make_system_models <- function(expected_popn, mort_rates, fert_rates,
     prior_triangle <- demest::Zero()
     prior_time <- demest::ExchFixed(sd = sd_time)
     prior_agesex_popn <- demest::Known(mean = log(expected_popn), sd = sd_agesex)
-    prior_agesex_mort <- demest::Known(mean = log(mort_rates), sd = sd_agesex)
+    prior_agesex_mort <- demest::Zero()
+    prior_agetriangle_mort <- demest::Zero()
+    prior_sextriangle_mort <- demest::Zero()
+    prior_agesextriangle_mort <- demest::Known(mean = log(mort_rates), sd = sd_agesex)
     prior_agesex_fert <- demest::Known(mean = log(fert_rates), sd = sd_agesex)
     prior_priorSD_popn <- demest::HalfT(df = Inf, scale = scale_sd_popn)
     prior_priorSD_rates <- demest::HalfT(df = Inf, scale = scale_sd_rates)
@@ -80,13 +83,16 @@ make_system_models <- function(expected_popn, mort_rates, fert_rates,
                               time ~ prior_time,
                               age:sex ~ prior_agesex_popn,
                               priorSD = prior_priorSD_popn)
-    mod_mort <- demest::Model(deaths ~ demest::Poisson(mean ~ age * sex + triangle + time),
+    mod_mort <- demest::Model(deaths ~ demest::Poisson(mean ~ age * sex * triangle + time),
                               `(Intercept)` ~ prior_intercept,
                               age ~ prior_age,
                               sex ~ prior_sex,
                               triangle ~ prior_triangle,
                               time ~ prior_time,
                               age:sex ~ prior_agesex_mort,
+                              age:triangle ~ prior_agetriangle_mort,
+                              sex:triangle ~ prior_sextriangle_mort,
+                              age:sex:triangle ~ prior_agesextriangle_mort,
                               priorSD = prior_priorSD_rates)
     mod_fert <- demest::Model(births ~ demest::Poisson(mean ~ age * sex + triangle + time),
                               `(Intercept)` ~ prior_intercept,

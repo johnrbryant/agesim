@@ -3,7 +3,7 @@ context("make_system_models")
 
 test_that("make_system_models creates expected outputs", {
     Lx <- dembase::Counts(Lx_west[,,15])
-    mort_rates <- dembase::Values(mx_west[,,15])
+    mort_rates <- dembase::Values(mx_west[,,,15])
     propn_age_fert = dembase::Values(propn_age_fert_booth)
     expected_popn <- make_stationary_popn(popn_size = 123,
                                         Lx = Lx,
@@ -21,7 +21,7 @@ test_that("make_system_models creates expected outputs", {
 
 test_that("make_system_models works with zero variances", {
     Lx <- dembase::Counts(Lx_west[,,15])
-    mort_rates <- dembase::Values(mx_west[,,15])
+    mort_rates <- dembase::Values(mx_west[,,,15])
     propn_age_fert = dembase::Values(propn_age_fert_booth)
     expected_popn <- make_stationary_popn(popn_size = 123,
                                         Lx = Lx,

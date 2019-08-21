@@ -27,7 +27,7 @@
 #'
 #' @examples
 #' Lx <- dembase::Counts(Lx_west[ , , 20])
-#' mort_rates <- dembase::Values(mx_west[ , , 20])
+#' mort_rates <- dembase::Values(mx_west[ , , , 20])
 #' propn_age_fert <- dembase::Values(propn_age_fert_booth)
 #' popn <- make_stationary_popn(popn_size = 100,
 #'                              Lx = Lx,
@@ -48,8 +48,8 @@ make_account <- function(popn, mort_rates, fert_rates,
                          time_start, time_end) {
     check_agesextime_Count(value = popn,
                            name = "popn")
-    check_agesextime_Value(value = mort_rates,
-                           name = "mort_rates")
+    check_agesextriangletime_Value(value = mort_rates,
+                                   name = "mort_rates")
     check_agesextime_Value(value = fert_rates,
                            name = "fert_rates")
     check_whole_number(value = time_start,
@@ -85,7 +85,8 @@ make_account <- function(popn, mort_rates, fert_rates,
                                             labels = labels_intervals,
                                             dimtype = "time",
                                             dimscale = "Intervals")
-    exposure <- dembase::exposure(popn)
+    mort_has_tri <- "triangle" %in% dimtypes(mort_rates)
+    exposure <- dembase::exposure(popn, triangles = mort_has_tri)
     exposure_births <- dembase::exposureBirths(popn,
                                                births = fert_rates)
     expected_deaths <- mort_rates * exposure

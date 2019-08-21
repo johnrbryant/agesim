@@ -3,11 +3,11 @@ context("make_account")
 
 test_that("make_account creates expected outputs", {
     Lx <- dembase::Counts(Lx_west[,,15])
-    mort_rates <- dembase::Values(mx_west[,,15])
+    mort_rates <- dembase::Values(mx_west[,,,15])
     propn_age_fert = dembase::Values(propn_age_fert_booth)
     expected_popn <- make_stationary_popn(popn_size = 123,
-                                        Lx = Lx,
-                                        sex_ratio = 111)
+                                          Lx = Lx,
+                                          sex_ratio = 111)
     initial_popn <- make_initial_popn(expected_popn = expected_popn,
                                       sd = 0.02)
     fert_rates <- make_stationary_fert_rates(Lx = Lx,

@@ -28,7 +28,7 @@ in priors for the intercept.}
 in priors for time.}
 
 \item{sd_agesex}{The standard deviation term to be used
-in priors for age-sex interactions.}
+in priors for age-sex or age-sex-triangle interactions.}
 
 \item{scale_sd_popn}{The scale to be used in the prior
 for standard deviation in the prior model for population.}
@@ -46,7 +46,7 @@ for a demographic account
 }
 \examples{
 Lx <- dembase::Counts(Lx_west[ , , 20])
-mort_rates <- dembase::Values(mx_west[ , , 20])
+mort_rates <- dembase::Values(mx_west[ , , , 20])
 propn_age_fert <- dembase::Values(propn_age_fert_booth)
 expected_popn <- make_stationary_popn(popn_size = 100,
                                       Lx = Lx,

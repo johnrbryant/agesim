@@ -44,7 +44,7 @@ do not have a time dimension, \code{make_account} adds one.
 }
 \examples{
 Lx <- dembase::Counts(Lx_west[ , , 20])
-mort_rates <- dembase::Values(mx_west[ , , 20])
+mort_rates <- dembase::Values(mx_west[ , , , 20])
 propn_age_fert <- dembase::Values(propn_age_fert_booth)
 popn <- make_stationary_popn(popn_size = 100,
                              Lx = Lx,

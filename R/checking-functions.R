@@ -110,6 +110,25 @@ check_agesextime <- function(value, name) {
     NULL
 }
 
+check_agesextriangletime <- function(value, name) {
+    n <- length(dim(value)) 
+    if (!(n %in% 2:4))
+        stop(gettextf("'%s' does not have %d, %d, or %d dimensions",
+                      name, 2L, 3L, 4L))
+    if (any(is.na(value)))
+        stop(gettextf("'%s' has missing values",
+                      name))
+    if (any(value < 0))
+        stop(gettextf("'%s' has negative values",
+                      name))
+    dimtypes <- dembase::dimtypes(value, use.names = FALSE)
+    if (!all(dimtypes %in% c("age", "sex", "triangle", "time")))
+        stop(gettextf("'%s' has invalid dimtypes",
+                      name))
+    NULL
+}
+
+
 check_agesex_Count <- function(value, name) {
     if (!methods::is(value, "Counts"))
         stop(gettextf("'%s' has class \"%s\"",
@@ -145,6 +164,16 @@ check_agesextime_Value <- function(value, name) {
                      name = name)
     NULL
 }
+
+check_agesextriangletime_Value <- function(value, name) {
+    if (!methods::is(value, "Values"))
+        stop(gettextf("'%s' has class \"%s\"",
+                      name, class(value)))
+    check_agesextriangletime(value = value,
+                             name = name)
+    NULL
+}
+
 
 
 
