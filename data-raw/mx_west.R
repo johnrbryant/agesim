@@ -28,22 +28,6 @@ mx_west <- bind_rows(mx_west_female, mx_west_male) %>%
     mutate(age = cleanAgeGroup(age)) %>%
     mutate(level = as.integer(level))
 
-mx_west_04 <- mx_west %>%
-    filter(age %in% labels_04) %>%
-    spread(key = age, value = Freq) %>%
-    mutate(Lower = (4.5 * `0` + 8 * `1-4`) / 12.5, # weight by area in Lexis plane
-           Upper = (0.5 * `0` + 12 * `1-4`) / 12.5) %>%
-    select(-`0`, -`1-4`) %>%
-    gather(key = triangle, value = value, Lower, Upper) %>%
-    mutate(age = "0-4")
-
-mx_west_0569 <- mx_west %>%
-    filter(age %in% labels_0569) %>%
-    mutate(Lower = Freq,
-           Upper = Freq) %>%
-    gather(key = triangle, value = Freq, Lower, Upper) %>%
-    rename(value = Freq)
-
 Lx_west_female <- (cdmltw(sex = "F")$nLx) %>%
     as.data.frame.table(stringsAsFactors = FALSE) %>%
     mutate(sex = "Female")
@@ -55,7 +39,37 @@ Lx_west_male <- (cdmltw(sex = "M")$nLx) %>%
 Lx_west <- bind_rows(Lx_west_female, Lx_west_male) %>%
     rename(level = Var1, age = Var2) %>%
     mutate(age = cleanAgeGroup(age)) %>%
-    mutate(level = as.integer(level)) %>%
+    mutate(level = as.integer(level))
+
+Lx_west_04 <- Lx_west %>%
+    filter(age %in% labels_04) %>%
+    mutate(age = sub("-",  "", age),
+           age = paste("Lx", age, sep = ".")) %>%
+    spread(key = age, value = Freq) %>%
+    mutate(level = as.integer(level))
+
+mx_west_04 <- mx_west %>%
+    filter(age %in% labels_04) %>%
+    mutate(age = sub("-", "", age),
+           age = paste("mx", age, sep = ".")) %>%
+    spread(key = age, value = Freq) %>%
+    left_join(Lx_west_04, by = c("level", "sex")) %>%
+    mutate(Lower = ((4.5 * Lx.0 * mx.0 + 2 * Lx.14 * mx.14)
+        / (4.5 * Lx.0 + 2 * Lx.14)),
+           Upper = ((0.5 * Lx.0 * mx.0 + 3 * Lx.14 * mx.14)
+        / (0.5 * Lx.0 + 3 * Lx.14))) %>%
+    select(-Lx.0, -mx.0, -Lx.14, -mx.14) %>%
+    gather(key = triangle, value = value, Lower, Upper) %>%
+    mutate(age = "0-4")
+
+mx_west_0569 <- mx_west %>%
+    filter(age %in% labels_0569) %>%
+    mutate(Lower = Freq,
+           Upper = Freq) %>%
+    gather(key = triangle, value = Freq, Lower, Upper) %>%
+    rename(value = Freq)
+
+Lx_west <- Lx_west %>%
     dtabs(Freq ~ age + sex + level) %>%
     Counts()
 
