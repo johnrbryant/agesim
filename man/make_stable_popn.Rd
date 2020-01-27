@@ -4,8 +4,14 @@
 \alias{make_stable_popn}
 \title{Calculate an implied stable population}
 \usage{
-make_stable_popn(popn_size, Lx, fert_rates, sex_ratio, time_start = NULL,
-  time_end = NULL)
+make_stable_popn(
+  popn_size,
+  Lx,
+  fert_rates,
+  sex_ratio,
+  time_start = NULL,
+  time_end = NULL
+)
 }
 \arguments{
 \item{popn_size}{The total population size.}

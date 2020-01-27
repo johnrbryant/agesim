@@ -25,10 +25,7 @@ Above age 5, values for the upper Lexis triangle
 are identical to values for the lower Lexis triangle,
 for the same age, sex, and lifetable level.
 Below age 5, the triangles are weighted
-averages of mortality rates for ages 0 and 1-4,
-with lower triange giving a 4.5/12.5 weight to
-age 0, and the upper triangle giving a 0.5/12.5 weight
-to age 0.
+averages of mortality rates for ages 0 and 1-4.
 }
 \seealso{
 \code{\link{Lx_west}}

@@ -4,8 +4,13 @@
 \alias{make_stationary_popn}
 \title{Calculate an implied stationary population}
 \usage{
-make_stationary_popn(popn_size, Lx, sex_ratio, time_start = NULL,
-  time_end = NULL)
+make_stationary_popn(
+  popn_size,
+  Lx,
+  sex_ratio,
+  time_start = NULL,
+  time_end = NULL
+)
 }
 \arguments{
 \item{popn_size}{The total population size.}

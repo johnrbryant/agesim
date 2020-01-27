@@ -4,9 +4,16 @@
 \alias{make_system_models}
 \title{Make system models for a demographic account}
 \usage{
-make_system_models(expected_popn, mort_rates, fert_rates,
-  sd_intercept = 0.1, sd_time = 0.01, sd_agesex = 0.01,
-  scale_sd_popn = 0.01, scale_sd_rates = 0.01)
+make_system_models(
+  expected_popn,
+  mort_rates,
+  fert_rates,
+  sd_intercept = 0.1,
+  sd_time = 0.01,
+  sd_agesex = 0.01,
+  scale_sd_popn = 0.01,
+  scale_sd_rates = 0.01
+)
 }
 \arguments{
 \item{expected_popn}{A \code{\link[dembase:Counts-class]{Counts}}

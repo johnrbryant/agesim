@@ -3,7 +3,6 @@
 \docType{package}
 \name{agesim}
 \alias{agesim}
-\alias{agesim-package}
 \title{Simulated age-structured populations}
 \description{
 Simulated age-structured populations

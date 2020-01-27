@@ -86,8 +86,11 @@ make_account <- function(popn, mort_rates, fert_rates,
                                             dimtype = "time",
                                             dimscale = "Intervals")
     mort_has_tri <- "triangle" %in% dimtypes(mort_rates)
-    exposure <- dembase::exposure(popn, triangles = mort_has_tri)
+    fert_has_tri <- "triangle" %in% dimtypes(fert_rates)
+    exposure <- dembase::exposure(popn,
+                                  triangles = mort_has_tri)
     exposure_births <- dembase::exposureBirths(popn,
+                                               triangles = fert_has_tri,
                                                births = fert_rates)
     expected_deaths <- mort_rates * exposure
     expected_births <- fert_rates * exposure_births
@@ -97,17 +100,17 @@ make_account <- function(popn, mort_rates, fert_rates,
     births <- stats::rpois(n = length(expected_births),
                            lambda = expected_births)
     deaths <- array(deaths,
-                    dim = dim(exposure),
-                    dimnames = dimnames(exposure))
+                    dim = dim(expected_deaths),
+                    dimnames = dimnames(expected_deaths))
     births <- array(births,
-                    dim = dim(exposure_births),
-                    dimnames = dimnames(exposure_births))
+                    dim = dim(expected_births),
+                    dimnames = dimnames(expected_births))
     deaths <- methods::new("Counts",
                            .Data = deaths,
-                           metadata = exposure@metadata)
+                           metadata = expected_deaths@metadata)
     births <- methods::new("Counts",
                            .Data = births,
-                           metadata = exposure_births@metadata)
+                           metadata = expected_births@metadata)
     ans <- dembase::Movements(population = popn,
                               births = births,
                               exits = list(deaths = deaths))
