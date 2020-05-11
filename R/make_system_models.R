@@ -13,10 +13,13 @@
 #' @param fert_rates A \code{\link[dembase:Values-class]{Values}}
 #' array giving mean fertility rates by age and sex. Typically
 #' generated using function \code{\link{make_stationary_fert_rates}}.
+#' @param time_trend_popn Whether to use random walk model
+#' for the time effect in population. Defaults to
+#' \code{TRUE}.
 #' @param sd_intercept The standard deviation term to be used
 #' in priors for the intercept.
 #' @param sd_time The standard deviation term to be used
-#' in priors for time.
+#' in exchangeable priors for time.
 #' @param sd_agesex The standard deviation term to be used
 #' in priors for age-sex or age-sex-triangle interactions.
 #' @param scale_sd_popn The scale to be used in the prior
@@ -42,15 +45,18 @@
 #'                    fert_rates = fert_rates)
 #' @export
 make_system_models <- function(expected_popn, mort_rates, fert_rates,
-                               sd_intercept = 0.1, sd_time = 0.01,
-                               sd_agesex = 0.01, scale_sd_popn = 0.01,
-                               scale_sd_rates = 0.01) {
+                               time_trend_popn = TRUE, 
+                               sd_intercept = 0, sd_time = 0,
+                               sd_agesex = 0,
+                               scale_sd_popn = 1,
+                               scale_sd_rates = 0) {
     check_agesex_Count(value = expected_popn,
                        name = "expected_popn")
     check_agesextriangletime_Value(value = mort_rates,
                                    name = "mort_rates")
     check_agesex_Value(value = fert_rates,
                        name = "fert_rates")
+    check_logical_flag(time_trend_popn)
     check_nonnegative_numeric(value = sd_intercept,
                               name = "sd_intercept")
     check_nonnegative_numeric(value = sd_time,
@@ -67,6 +73,14 @@ make_system_models <- function(expected_popn, mort_rates, fert_rates,
     prior_sex <- demest::Zero()
     prior_triangle <- demest::Zero()
     prior_time <- demest::ExchFixed(sd = sd_time)
+    if (time_trend_popn)
+        prior_time_popn <- demest::DLM(level = Level(scale = HalfT(scale = 0.025)),
+                                       trend = Trend(initial = Initial(sd = 0.025),
+                                                     scale = HalfT(scale = 0.025)),
+                                       damp = NULL,
+                                       error = Error(scale = HalfT(scale = 0.025)))
+    else
+        prior_time_popn <- prior_time
     prior_agesex_popn <- demest::Known(mean = log(expected_popn), sd = sd_agesex)
     prior_agesex_mort <- demest::Zero()
     prior_agetriangle_mort <- demest::Zero()
@@ -80,9 +94,10 @@ make_system_models <- function(expected_popn, mort_rates, fert_rates,
                               `(Intercept)` ~ prior_intercept,
                               age ~ prior_age,
                               sex ~ prior_sex,
-                              time ~ prior_time,
+                              time ~ prior_time_popn,
                               age:sex ~ prior_agesex_popn,
-                              priorSD = prior_priorSD_popn)
+                              priorSD = prior_priorSD_popn,
+                              jump = 0.05)
     mod_mort <- demest::Model(deaths ~ demest::Poisson(mean ~ age * sex * triangle + time),
                               `(Intercept)` ~ prior_intercept,
                               age ~ prior_age,

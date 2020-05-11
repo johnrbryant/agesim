@@ -8,11 +8,12 @@ make_system_models(
   expected_popn,
   mort_rates,
   fert_rates,
-  sd_intercept = 0.1,
-  sd_time = 0.01,
-  sd_agesex = 0.01,
+  time_trend_popn = TRUE,
+  sd_intercept = 0,
+  sd_time = 0,
+  sd_agesex = 0,
   scale_sd_popn = 0.01,
-  scale_sd_rates = 0.01
+  scale_sd_rates = 0
 )
 }
 \arguments{
@@ -28,11 +29,15 @@ array giving mortality rates by age and sex.}
 array giving mean fertility rates by age and sex. Typically
 generated using function \code{\link{make_stationary_fert_rates}}.}
 
+\item{time_trend_popn}{Whether to use a linear trend model
+for the time effect in population. Defaults to
+\code{TRUE}.}
+
 \item{sd_intercept}{The standard deviation term to be used
 in priors for the intercept.}
 
 \item{sd_time}{The standard deviation term to be used
-in priors for time.}
+in exchangeable priors for time.}
 
 \item{sd_agesex}{The standard deviation term to be used
 in priors for age-sex or age-sex-triangle interactions.}
