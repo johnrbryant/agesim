@@ -4,7 +4,9 @@
 \name{mx_west}
 \alias{mx_west}
 \title{Mortality rates mx from the West model life table}
-\format{An object of class \code{array} of dimension 17 x 2 x 2 x 25.}
+\format{
+An object of class \code{array} of dimension 15 x 2 x 2 x 25.
+}
 \source{
 The values were obtained from the
 \code{\link[demogR]{cdmltw}} function

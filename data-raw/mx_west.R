@@ -6,14 +6,14 @@ library(dplyr)
 library(tidyr)
 
 ## The calculations assume the open
-## age group starts at 80.
+## age group starts at 70.
 
 labels_04 <- c("0", "1-4")
-labels_0579 <- paste(seq(5, 75, 5), seq(9, 80, 5), sep = "-")
-labels_80plus <- c(paste(seq(80, 90, 5), seq(84, 94, 5), sep = "-"),
+labels_0569 <- paste(seq(5, 65, 5), seq(9, 70, 5), sep = "-")
+labels_70plus <- c(paste(seq(70, 90, 5), seq(74, 94, 5), sep = "-"),
                    "95+")
-labels_cleaned <- c(paste(seq(0, 75, 5), seq(4, 79, 5), sep = "-"),
-                    "80+")
+labels_cleaned <- c(paste(seq(0, 65, 5), seq(4, 69, 5), sep = "-"),
+                    "70+")
 
 mx_west_female <- (cdmltw(sex = "F")$nmx) %>%
     as.data.frame.table(stringsAsFactors = FALSE) %>%
@@ -62,8 +62,8 @@ mx_west_04 <- mx_west %>%
     gather(key = triangle, value = value, Lower, Upper) %>%
     mutate(age = "0-4")
 
-mx_west_0579 <- mx_west %>%
-    filter(age %in% labels_0579) %>%
+mx_west_0569 <- mx_west %>%
+    filter(age %in% labels_0569) %>%
     mutate(Lower = Freq,
            Upper = Freq) %>%
     gather(key = triangle, value = Freq, Lower, Upper) %>%
@@ -73,20 +73,20 @@ Lx_west <- Lx_west %>%
     dtabs(Freq ~ age + sex + level) %>%
     Counts()
 
-mx_west_80plus <- mx_west %>%
-    filter(age %in% labels_80plus) %>%
+mx_west_70plus <- mx_west %>%
+    filter(age %in% labels_70plus) %>%
     mutate(age = cleanAgeGroup(age)) %>%
     mutate(level = as.integer(level)) %>%
     dtabs(Freq ~ age + sex + level) %>%
     Values() %>%
-    collapseIntervals(dimension = "age", breaks = 80, weights = Lx_west) %>%
+    collapseIntervals(dimension = "age", breaks = 70, weights = Lx_west) %>%
     as.data.frame(stringsAsFactors = FALSE) %>%
     mutate(level = as.integer(level)) %>%
     mutate(Lower = value,
            Upper = value) %>%
     gather(key = triangle, value = value, Lower, Upper)
 
-mx_west <- bind_rows(mx_west_04, mx_west_0579, mx_west_80plus) %>%
+mx_west <- bind_rows(mx_west_04, mx_west_0569, mx_west_70plus) %>%
     mutate(age = factor(age, levels = labels_cleaned)) %>%
     dtabs(value ~ age + sex + triangle + level)
 

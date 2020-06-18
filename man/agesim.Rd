@@ -4,6 +4,3 @@
 \name{agesim}
 \alias{agesim}
 \title{Simulated age-structured populations}
-\description{
-Simulated age-structured populations
-}

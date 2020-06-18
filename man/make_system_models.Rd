@@ -12,7 +12,7 @@ make_system_models(
   sd_intercept = 0,
   sd_time = 0,
   sd_agesex = 0,
-  scale_sd_popn = 0.01,
+  scale_sd_popn = 1,
   scale_sd_rates = 0
 )
 }
@@ -29,7 +29,7 @@ array giving mortality rates by age and sex.}
 array giving mean fertility rates by age and sex. Typically
 generated using function \code{\link{make_stationary_fert_rates}}.}
 
-\item{time_trend_popn}{Whether to use a linear trend model
+\item{time_trend_popn}{Whether to use random walk model
 for the time effect in population. Defaults to
 \code{TRUE}.}
 

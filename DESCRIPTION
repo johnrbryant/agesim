@@ -1,6 +1,6 @@
 Package: agesim
 Title: Simulate Age Structures in Small Populations
-Version: 0.0.0.9001
+Version: 0.0.0.9002
 Authors@R: person("John", "Bryant", email = "john.r.bryant@gmail.com", role = c("aut", "cre"))
 Description: Functions and data for simulating age-sex structure
     in small populations. Most of the work is done by functions
@@ -20,4 +20,4 @@ Suggests:
 Remotes:
      statisticsnz/dembase,
      statisticsnz/demest
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.0

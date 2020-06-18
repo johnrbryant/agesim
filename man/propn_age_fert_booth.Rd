@@ -4,7 +4,9 @@
 \name{propn_age_fert_booth}
 \alias{propn_age_fert_booth}
 \title{Age distribution for fertility}
-\format{An object of class \code{array} of length 8.}
+\format{
+An object of class \code{array} of length 8.
+}
 \source{
 Booth H (1984) Transforming Gompertz's function
 for fertility analysis: The development of a standard
