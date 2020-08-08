@@ -4,3 +4,9 @@
 \name{agesim}
 \alias{agesim}
 \title{Simulated age-structured populations}
+\description{
+Functions and data for simulating age-structured populations.
+This package is experimental. The functionality is likely
+to be absorbed into package 'demtech' when that is
+written.
+}

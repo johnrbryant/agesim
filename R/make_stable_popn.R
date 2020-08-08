@@ -17,9 +17,14 @@
 #' 
 #' @inheritParams make_stationary_popn
 #' @param fert_rates Age-sex specific fertility rates
+#' @param growth_rate If \code{TRUE} return the growth
+#' rate rather than population counts. Defaults to
+#' \code{FALSE}.
 #'
-#' @return A \code{\link[dembase]{Counts}} object,
-#' with the same dimensions as \code{Lx}.
+#' @return If \code{growth_rate} is \code{FALSE} (the default)
+#' a \code{\link[dembase]{Counts}} object,
+#' with the same dimensions as \code{Lx};
+#' otherwise, a number.
 #'
 #' @seealso \code{\link{Lx_west}},
 #' \code{\link{make_stationary_popn}},
@@ -41,9 +46,15 @@
 #'                  fert_rates = fert_rates,
 #'                  time_start = 2000,
 #'                  time_end = 2025)
+#' make_stable_popn(popn_size = 100,
+#'                  Lx = Lx,
+#'                  sex_ratio = 105,
+#'                  fert_rates = fert_rates,
+#'                  growth_rate = TRUE)
 #' @export
 make_stable_popn <- function(popn_size, Lx, fert_rates, sex_ratio,
-                             time_start = NULL, time_end = NULL) {
+                             time_start = NULL, time_end = NULL,
+                             growth_rate = FALSE) {
     check_positive_numeric(value = popn_size,
                            name = "popn_size")
     check_agesex_Count(value = Lx,
@@ -52,6 +63,8 @@ make_stable_popn <- function(popn_size, Lx, fert_rates, sex_ratio,
                        name = "fert_rates")
     check_positive_numeric(value = sex_ratio,
                            name = "sex_ratio")
+    check_logical_flag(value = growth_rate,
+                       name = "growth_rate")                       
     reprod_Lx <- dembase::makeCompatible(x = Lx,
                                          y = fert_rates,
                                          subset = TRUE)
@@ -69,6 +82,8 @@ make_stable_popn <- function(popn_size, Lx, fert_rates, sex_ratio,
     }
     l <- stats::optimize(f, interval = c(-10, 10))
     r <- l$minimum
+    if (growth_rate)
+        return(r)
     midpoints_all <- as.data.frame(dembase::slab(Lx,
                                                  dimension = "sex",
                                                  elements = "Female"),

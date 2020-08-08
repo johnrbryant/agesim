@@ -10,7 +10,8 @@ make_stable_popn(
   fert_rates,
   sex_ratio,
   time_start = NULL,
-  time_end = NULL
+  time_end = NULL,
+  growth_rate = FALSE
 )
 }
 \arguments{
@@ -27,10 +28,16 @@ births.}
 \item{time_start}{First time point. Optional.}
 
 \item{time_end}{Last time point. Optional.}
+
+\item{growth_rate}{If \code{TRUE} return the growth
+rate rather than population counts. Defaults to
+\code{FALSE}.}
 }
 \value{
-A \code{\link[dembase]{Counts}} object,
-with the same dimensions as \code{Lx}.
+If \code{growth_rate} is \code{FALSE} (the default)
+a \code{\link[dembase]{Counts}} object,
+with the same dimensions as \code{Lx};
+otherwise, a number.
 }
 \description{
 Calculation the stable (ie constant age structure) population
@@ -64,6 +71,11 @@ x <- make_stable_popn(popn_size = 100,
                  fert_rates = fert_rates,
                  time_start = 2000,
                  time_end = 2025)
+make_stable_popn(popn_size = 100,
+                 Lx = Lx,
+                 sex_ratio = 105,
+                 fert_rates = fert_rates,
+                 growth_rate = TRUE)
 }
 \seealso{
 \code{\link{Lx_west}},
