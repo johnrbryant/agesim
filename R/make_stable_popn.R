@@ -80,7 +80,7 @@ make_stable_popn <- function(popn_size, Lx, fert_rates, sex_ratio,
         prod_exp <- sum(product_Lx_fert * exp(-r * midpoints_reprod))
         abs(prod_exp - 1)
     }
-    l <- stats::optimize(f, interval = c(-10, 10))
+    l <- stats::optimize(f, interval = c(-0.5, 0.5))
     r <- l$minimum
     if (growth_rate)
         return(r)
