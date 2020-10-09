@@ -5,7 +5,7 @@
 \alias{propn_age_fert_maori}
 \title{Age distribution for fertility, based on Maori fertility in 1962}
 \format{
-An object of class \code{array} of length 7.
+An object of class \code{array} of length 8.
 }
 \source{
 Table "Age-specific fertility rates by 5 year age group
